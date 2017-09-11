@@ -22,7 +22,7 @@ backup(){
 if [ -z $SLEEP_SECONDS ]; then
     backup
 else
-    for (( ; ; ))
+    while
     do
         backup
         echo "Sleeping for $SLEEP_SECONDS seconds.."
