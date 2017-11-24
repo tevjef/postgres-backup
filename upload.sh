@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ set -e
+ 
 # export PGHOST
 # export PGPORT
 # export PGDATABASE
@@ -14,9 +16,10 @@
 backup(){
     echo "Starting backup..."
     pg_dump -v -w -c | gzip -9 > $PGDATABASE.sql.gz
-    FILE_NAME="$PGDATABASE-$(date +"%Y%m%d%H%M")"
+    FILE_NAME="$PGDATABASE-$(date +"%Y%m%d%H%M").sql.gz"
     gcsupload -bucket "$GCS_BUCKET" -project "$GCS_PROJECT" -name "$FILE_NAME" -source "$PGDATABASE.sql.gz"
     echo "Backup complete..."
+    rm -v $PGDATABASE.sql.gz
 }
 
 if [ -z $SLEEP_SECONDS ]; then
